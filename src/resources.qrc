@@ -1,0 +1,8 @@
+<RCC>
+  <qresource prefix="/">
+    <file alias="main.qml">contents/ui/main.qml</file>
+    <file alias="Notes.qml">contents/ui/Notes.qml</file>
+    <file alias="SideBar.qml">contents/ui/SideBar.qml</file>
+  </qresource>
+</RCC>
+
