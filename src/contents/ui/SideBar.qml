@@ -3,15 +3,19 @@ import QtQuick.Layouts
 import QtQuick.Controls as Controls
 import org.kde.kirigami as Kirigami
 
+import "sidebar"
+
 Kirigami.GlobalDrawer {
   id: root
-
-  collapsible: false
 
   modal: false
   interactive: false
 
-  width: 150
+  handleVisible: true
+  handleClosedIcon.name: "sidebar-expand"
+  handleOpenIcon.name: "sidebar-collapse"
+
+  width: 200
 
   header: Controls.ToolBar {
     height: pageStack.globalToolBar.preferredHeight
@@ -19,61 +23,19 @@ Kirigami.GlobalDrawer {
     RowLayout {
       anchors.fill: parent
 
-      Kirigami.Heading { text: "Notizen" }
+      Kirigami.Heading {
+        Layout.leftMargin: Kirigami.Units.largeSpacing
+        text: "Notizen"
+      }
     }
   }
 
   actions: [
-    Kirigami.Action {
-      text: "Notes"
-      expandible: true
+    Notes {},
 
-      Kirigami.Action {
-        text: "All Notes"
-        icon.name: "note"
-      }
+    Notebooks {},
 
-      Kirigami.Action {
-        text: "Archive"
-        icon.name: "archive-insert"
-      }
-
-      Kirigami.Action {
-        text: "Deleted"
-        icon.name: "trash-empty"
-      }
-
-    },
-
-    Kirigami.Action {
-      text: "Notebooks"
-      expandible: true
-
-      Kirigami.Action {
-        text: "Add Notebook"
-        icon.name: "bookmark-add-folder"
-      }
-
-      Kirigami.Action {
-        text: "Other"
-        icon.name: "bookmarks"
-      }
-    },
-
-    Kirigami.Action {
-      separator: true
-      enabled: false
-    },
-
-    Kirigami.Action {
-      text: "Tags"
-      icon.name: "tag"
-    },
-
-    Kirigami.Action {
-      separator: true
-      enabled: false
-    }
+    Tags {}
   ]
 
   footer: Controls.ToolBar {

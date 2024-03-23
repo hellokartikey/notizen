@@ -17,4 +17,3 @@ auto main(int argc, char* argv[]) -> int {
 
   return app.exec();
 }
-

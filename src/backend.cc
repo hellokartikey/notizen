@@ -8,3 +8,10 @@ auto Backend::inst() -> Backend* {
   return &backend;
 }
 
+auto Backend::hashTags() const -> QStringList {
+  // TODO
+  using namespace Qt::Literals::StringLiterals;
+
+  return {u"lmao"_s, u"test"_s};
+}
+
