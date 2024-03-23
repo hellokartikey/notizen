@@ -15,7 +15,7 @@ Kirigami.Action {
 
     Kirigami.Action {
       text: "Archive"
-      icon.name: "archive-insert"
+      icon.name: "archive-extract"
     },
 
     Kirigami.Action {

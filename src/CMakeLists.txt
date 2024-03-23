@@ -6,6 +6,7 @@ add_executable(
   ${PROJECT_NAME}
   main.cc
   backend.cc backend.h
+  actions.cc actions.h
   resources.qrc)
 
 target_link_libraries(

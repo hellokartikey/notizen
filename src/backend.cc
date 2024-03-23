@@ -3,7 +3,7 @@
 Backend::Backend(QObject* parent) : QObject(parent) {}
 
 auto Backend::inst() -> Backend* {
-  static auto backend = Backend();
+  static auto backend = Backend{};
 
   return &backend;
 }
@@ -14,4 +14,3 @@ auto Backend::hashTags() const -> QStringList {
 
   return {u"lmao"_s, u"test"_s};
 }
-

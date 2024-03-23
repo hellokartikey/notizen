@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls as Controls
 import org.kde.kirigami as Kirigami
 
+import Notizen
+
 import "sidebar"
 
 Kirigami.GlobalDrawer {
@@ -15,20 +17,9 @@ Kirigami.GlobalDrawer {
   handleClosedIcon.name: "sidebar-expand"
   handleOpenIcon.name: "sidebar-collapse"
 
-  width: 200
+  width: 192
 
-  header: Controls.ToolBar {
-    height: pageStack.globalToolBar.preferredHeight
-
-    RowLayout {
-      anchors.fill: parent
-
-      Kirigami.Heading {
-        Layout.leftMargin: Kirigami.Units.largeSpacing
-        text: "Notizen"
-      }
-    }
-  }
+  header: HeaderBar {}
 
   actions: [
     Notes {},
@@ -37,24 +28,5 @@ Kirigami.GlobalDrawer {
 
     Tags {}
   ]
-
-  footer: Controls.ToolBar {
-    position: Controls.ToolBar.Footer
-    ColumnLayout {
-      anchors.fill: parent
-
-      Controls.ItemDelegate {
-        Layout.fillWidth: true
-        text: "Settings"
-        icon.name: "settings-configure"
-      }
-
-      Controls.ItemDelegate {
-        Layout.fillWidth: true
-        text: "About"
-        icon.name: "help-about"
-      }
-    }
-  }
 }
 

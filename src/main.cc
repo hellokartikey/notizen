@@ -1,8 +1,10 @@
+#include <qqml.h>
+
 #include <QApplication>
 #include <QQmlApplicationEngine>
-#include <QQmlContext>
 #include <QString>
 
+#include "actions.h"
 #include "backend.h"
 
 auto main(int argc, char* argv[]) -> int {
@@ -11,7 +13,8 @@ auto main(int argc, char* argv[]) -> int {
   auto app = QApplication{argc, argv};
   auto engine = QQmlApplicationEngine{};
 
-  engine.rootContext()->setContextProperty(u"backend"_s, Backend::inst());
+  qmlRegisterSingletonInstance("Notizen", 1, 0, "Backend", Backend::inst());
+  qmlRegisterSingletonInstance("Notizen", 1, 0, "Actions", Actions::inst(app));
 
   engine.load(u"qrc:/main.qml"_s);
 

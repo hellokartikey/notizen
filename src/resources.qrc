@@ -4,10 +4,11 @@
     <file alias="Notes.qml">contents/ui/Notes.qml</file>
     <file alias="SideBar.qml">contents/ui/SideBar.qml</file>
 
-    <file alias="sidebar/Tags.qml">contents/ui/sidebar/Tags.qml</file>
-    <file alias="sidebar/Tag.qml">contents/ui/sidebar/Tag.qml</file>
+    <file alias="sidebar/HeaderBar.qml">contents/ui/sidebar/HeaderBar.qml</file>
     <file alias="sidebar/Notebooks.qml">contents/ui/sidebar/Notebooks.qml</file>
     <file alias="sidebar/Notes.qml">contents/ui/sidebar/Notes.qml</file>
+    <file alias="sidebar/Tag.qml">contents/ui/sidebar/Tag.qml</file>
+    <file alias="sidebar/Tags.qml">contents/ui/sidebar/Tags.qml</file>
   </qresource>
 </RCC>
 
