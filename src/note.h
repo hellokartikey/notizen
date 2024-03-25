@@ -2,13 +2,14 @@
 #define NOTIZEN_NOTE_H
 
 #include <QDate>
+#include <QList>
 #include <QObject>
 #include <QString>
 
 class Attachment;
 
 class Note : public QObject {
-  Q_OBJECT;
+  Q_OBJECT
 
  public:
   explicit Note(QObject* parent = nullptr);
@@ -32,5 +33,7 @@ class Note : public QObject {
 
   QList<Attachment*> m_attachments;
 };
+
+using NoteList = QList<Note*>;
 
 #endif

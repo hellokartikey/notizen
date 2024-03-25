@@ -1,5 +1,3 @@
-#include <qqml.h>
-
 #include <QApplication>
 #include <QQmlApplicationEngine>
 #include <QString>

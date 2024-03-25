@@ -10,3 +10,5 @@ auto Actions::inst(QApplication& app) -> Actions* {
 }
 
 auto Actions::quit() -> void { m_app.quit(); }
+
+#include "moc_actions.cpp"

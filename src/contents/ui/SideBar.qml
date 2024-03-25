@@ -10,14 +10,14 @@ import "sidebar"
 Kirigami.GlobalDrawer {
   id: root
 
-  modal: false
-  interactive: false
+  modal: Kirigami.Settings.isMobile
+  interactive: Kirigami.Settings.isMobile
 
   handleVisible: true
   handleClosedIcon.name: "sidebar-expand"
   handleOpenIcon.name: "sidebar-collapse"
 
-  width: 192
+  width: Kirigami.Units.gridUnit * 10
 
   header: HeaderBar {}
 
@@ -29,4 +29,3 @@ Kirigami.GlobalDrawer {
     Tags {}
   ]
 }
-

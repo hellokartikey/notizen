@@ -6,4 +6,3 @@ import org.kde.kirigami as Kirigami
 Kirigami.Action {
   icon.name: "tag"
 }
-

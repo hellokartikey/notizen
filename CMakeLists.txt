@@ -18,7 +18,8 @@ find_package(Qt6 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS
   Core
   Quick
   QuickControls2
-  Widgets)
+  Widgets
+  Sql)
 
 find_package(KF6 ${KF_MIN_VERSION} REQUIRED COMPONENTS
   Kirigami2)

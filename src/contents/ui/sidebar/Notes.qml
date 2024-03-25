@@ -24,4 +24,3 @@ Kirigami.Action {
     }
   ]
 }
-

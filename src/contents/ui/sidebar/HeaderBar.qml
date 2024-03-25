@@ -42,4 +42,3 @@ Controls.ToolBar {
     }
   }
 }
-

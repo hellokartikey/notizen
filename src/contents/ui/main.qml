@@ -3,6 +3,8 @@ import QtQuick.Layouts
 import QtQuick.Controls as Controls
 import org.kde.kirigami as Kirigami
 
+import Notizen
+
 Kirigami.ApplicationWindow {
   id: root
 
@@ -12,4 +14,3 @@ Kirigami.ApplicationWindow {
 
   globalDrawer: SideBar {}
 }
-
