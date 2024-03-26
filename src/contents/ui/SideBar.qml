@@ -20,12 +20,13 @@ Kirigami.GlobalDrawer {
   width: Kirigami.Units.gridUnit * 10
 
   header: HeaderBar {}
+  footer: FooterBar {}
 
-  actions: [
-    Notes {},
+  Column {
+    Layout.fillWidth: true
 
-    Notebooks {},
-
+    Notes {}
+    Notebooks {}
     Tags {}
-  ]
+  }
 }

@@ -29,4 +29,3 @@ find_package(KPim6AkonadiNotes REQUIRED)
 add_subdirectory(src)
 
 feature_summary(WHAT ALL INCLUDE_QUIET_PACKAGES FATAL_ON_MISSING_REQUIRED_PACKAGES)
-

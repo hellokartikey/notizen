@@ -5,6 +5,8 @@ import org.kde.kirigami as Kirigami
 
 import Notizen
 
+import "sidebar"
+
 Page {
   id: root
 

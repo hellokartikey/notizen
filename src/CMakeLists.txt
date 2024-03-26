@@ -21,4 +21,3 @@ target_link_libraries(
   KF6::Kirigami2)
 
 install(TARGETS ${PROJECT_NAME} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})
-

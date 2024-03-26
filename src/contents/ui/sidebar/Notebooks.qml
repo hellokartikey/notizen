@@ -3,19 +3,49 @@ import QtQuick.Layouts
 import QtQuick.Controls as Controls
 import org.kde.kirigami as Kirigami
 
-Kirigami.Action {
-  text: "Notebooks"
-  expandible: true
+import Notizen
 
-  children: [
-    Kirigami.Action {
+ListView {
+  id: root
+
+  model: Backend.notebooks
+
+  interactive: false
+
+  property var delegateHeight: undefined
+  property var headerHeight: undefined
+
+  width: parent.width
+  height: headerHeight + (count * delegateHeight)
+
+  Component.onCompleted: {
+    delegateHeight = currentItem.height
+    headerHeight = headerItem.height
+  }
+
+  header: ColumnLayout {
+    width: ListView.view.width
+
+    spacing: 0
+
+    Kirigami.ListSectionHeader {
+      Layout.fillWidth: true
+      label: "Notebooks"
+    }
+
+    Controls.ItemDelegate {
+      id: tmp
+      Layout.fillWidth: true
       text: "Add Notebook"
       icon.name: "bookmark-add-folder"
-    },
-
-    Kirigami.Action {
-      text: "Other"
-      icon.name: "bookmarks"
+      onClicked: { Backend.addNotebook("lmao" + count) }
     }
-  ]
+  }
+
+  delegate: Controls.ItemDelegate {
+    id: delegateItem
+    text: modelData
+    icon.name: "bookmarks"
+    width: ListView.view.width
+  }
 }

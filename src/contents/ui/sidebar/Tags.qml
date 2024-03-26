@@ -5,19 +5,35 @@ import org.kde.kirigami as Kirigami
 
 import Notizen
 
-Kirigami.Action {
-  id: tagList
+ListView {
+  id: root
 
-  text: "Tags"
-  expandible: true
+  model: Backend.tags
 
-  visible: Backend.hashTags.length
+  visible: Backend.tags.length
+
+  interactive: false
+
+  property var delegateHeight: undefined
+  property var headerHeight: undefined
+
+  width: parent.width
+  height: headerHeight + (count * delegateHeight)
 
   Component.onCompleted: {
-    var tagComponent = Qt.createComponent("Tag.qml")
-    for ( const tag of Backend.hashTags ) {
-      var tagAction = tagComponent.createObject(tagList, {text: tag})
-      children.push(tagAction)
-    }
+    delegateHeight = currentItem.height
+    headerHeight = headerItem.height
+  }
+
+  header: Kirigami.ListSectionHeader {
+    Layout.fillWidth: true
+    width: ListView.view.width
+    label: "Tags"
+  }
+
+  delegate: Controls.ItemDelegate {
+    text: modelData
+    icon.name: "tag"
+    width: ListView.view.width
   }
 }

@@ -18,6 +18,7 @@ Controls.ToolBar {
 
     Kirigami.ActionToolBar {
       overflowIconName: "menu_new"
+      visible: ! Kirigami.Settings.isMobile
 
       actions: [
         Kirigami.Action {
