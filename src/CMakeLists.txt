@@ -6,7 +6,6 @@ add_executable(
   ${PROJECT_NAME}
   main.cc
   backend.cc  backend.h
-  actions.cc  actions.h
   note.cc     note.h
   resources.qrc)
 

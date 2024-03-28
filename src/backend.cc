@@ -1,6 +1,7 @@
 #include "backend.h"
 
 #include <QSqlQuery>
+#include <QApplication>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -64,7 +65,7 @@ auto Backend::initDb() -> void {
 
   // hash tags table
   query.prepare(
-      u"CREATE TABLE IF NOT EXISTS hash_tags ( \
+      u"CREATE TABLE IF NOT EXISTS tags (      \
         id   INTEGER PRIMARY KEY,              \
         name TEXT    NOT NULL                  \
       )"_s);
@@ -111,6 +112,11 @@ auto Backend::addNotebook(const QString& name) -> void {
   if (query.exec()) {
     Q_EMIT sigNotebooks();
   }
+}
+
+
+auto Backend::quit() -> void {
+  QApplication::quit();
 }
 
 #include "moc_backend.cpp"

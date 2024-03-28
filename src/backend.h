@@ -21,10 +21,15 @@ class Backend : public QObject {
   auto initDb() -> void;
   auto isDbOk() const -> bool;
 
+  // Tags related methods
   auto tags() -> QStringList;
 
+  // Notebook related methods
   auto notebooks() -> QStringList;
   Q_INVOKABLE void addNotebook(const QString& name);
+
+  // Actions
+  Q_INVOKABLE void quit();
 
  Q_SIGNALS:
   auto sigIsDbOk() -> void;

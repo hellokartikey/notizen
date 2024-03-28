@@ -6,6 +6,8 @@ import org.kde.kirigami as Kirigami
 ColumnLayout {
   width: parent.width
 
+  spacing: 0
+
   Kirigami.ListSectionHeader {
     Layout.fillWidth: true
     label: "Notes"

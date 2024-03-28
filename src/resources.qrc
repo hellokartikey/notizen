@@ -6,6 +6,8 @@
 
     <file alias="Notes.qml">contents/ui/Notes.qml</file>
 
+    <file alias="components/Note.qml">contents/ui/components/Note.qml</file>
+
     <file alias="sidebar/HeaderBar.qml">contents/ui/sidebar/HeaderBar.qml</file>
     <file alias="sidebar/FooterBar.qml">contents/ui/sidebar/FooterBar.qml</file>
     <file alias="sidebar/Notebooks.qml">contents/ui/sidebar/Notebooks.qml</file>

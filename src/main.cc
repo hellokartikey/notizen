@@ -2,7 +2,6 @@
 #include <QQmlApplicationEngine>
 #include <QString>
 
-#include "actions.h"
 #include "backend.h"
 
 auto main(int argc, char* argv[]) -> int {
@@ -12,7 +11,6 @@ auto main(int argc, char* argv[]) -> int {
   auto engine = QQmlApplicationEngine{};
 
   qmlRegisterSingletonInstance("Notizen", 1, 0, "Backend", Backend::inst());
-  qmlRegisterSingletonInstance("Notizen", 1, 0, "Actions", Actions::inst(app));
 
   engine.load(u"qrc:/main.qml"_s);
 

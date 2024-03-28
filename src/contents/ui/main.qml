@@ -10,6 +10,11 @@ Kirigami.ApplicationWindow {
 
   title: "Notizen"
 
+  minimumWidth: Kirigami.Units.gridUnit * 30
+  minimumHeight: Kirigami.Units.gridUnit * 20
+
+  width: Kirigami.Units.gridUnit * 50
+
   pageStack.initialPage: Notes {}
 
   globalDrawer: SideBar {}

@@ -37,7 +37,7 @@ Controls.ToolBar {
           text: "Quit"
           icon.name: "application-exit"
           shortcut: StandardKey.Quit
-          onTriggered: { Actions.quit() }
+          onTriggered: { Backend.quit() }
         }
       ]
     }
