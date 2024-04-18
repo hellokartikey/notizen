@@ -7,6 +7,7 @@ import Notizen
 
 Controls.ToolBar {
   height: pageStack.globalToolBar.preferredHeight
+  width: parent.width
 
   RowLayout {
     anchors.fill: parent

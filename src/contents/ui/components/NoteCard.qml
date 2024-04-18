@@ -3,14 +3,11 @@ import QtQuick.Layouts
 import QtQuick.Controls as Controls
 import org.kde.kirigami as Kirigami
 
-Kirigami.Card {
-  Layout.alignment: Qt.AlignTop | Qt.AlignHCenter
+import Notizen
 
+Kirigami.Card {
   Layout.minimumWidth: Kirigami.Units.gridUnit * 12
   Layout.minimumHeight: Math.min(Kirigami.Units.gridUnit * 15, implicitHeight)
-
-  Layout.maximumWidth: Layout.minimumWidth
-  Layout.maximumHeight: Layout.minimumHeight
 
   showClickFeedback: true
 
@@ -18,19 +15,14 @@ Kirigami.Card {
     Kirigami.Heading {
       Layout.fillWidth: true
 
-      text: "Title is this very long string that should wrap around"
+      text: modelData.title
       font.weight: Font.Bold
       font.bold: true
-      maximumLineCount: 2
+
+      maximumLineCount: 10
 
       wrapMode: Text.Wrap
       elide: Text.ElideRight
-    }
-
-    Kirigami.Chip {
-      closable: false
-      checkable: false
-      text: "tag"
     }
 
     Kirigami.Separator { Layout.fillWidth: true }
@@ -39,31 +31,45 @@ Kirigami.Card {
   contentItem: Text {
     Layout.fillWidth: true
 
-    text: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. This it again too long of a note"
+    text: modelData.content
+    textFormat: Text.MarkdownText
 
-    wrapMode: Text.Wrap
+    wrapMode: Text.WordWrap
     elide: Text.ElideRight
+  }
+
+  onClicked: {
+    Backend.currentNote = modelData
+    openNoteView()
   }
 
   actions: [
     Kirigami.Action {
       icon.name: "pin"
+      text: "Pin"
+      checkable: true
+    },
+
+    Kirigami.Action {
+      icon.name: "color-management"
+      text: "Color"
     },
 
     Kirigami.Action {
       icon.name: "archive-insert"
+      text: "Archive"
+      checkable: true
     },
 
     Kirigami.Action {
       icon.name: "view-hidden"
-    },
-
-    Kirigami.Action {
-      icon.name: "edit-duplicate"
+      text: "Hide"
+      checkable: true
     },
 
     Kirigami.Action {
       icon.name: "delete"
+      text: "Delete"
     }
   ]
 }

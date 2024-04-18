@@ -1,7 +1,8 @@
 #include "backend.h"
 
-#include <QSqlQuery>
 #include <QApplication>
+#include <QSqlQuery>
+#include <QSqlRecord>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -12,6 +13,7 @@ Backend::Backend(QObject* parent) : QObject(parent) {
   m_ok = m_db.open();
 
   initDb();
+  readNotes();
 }
 
 auto Backend::inst() -> Backend* {
@@ -39,7 +41,7 @@ auto Backend::initDb() -> void {
         color        TEXT    DEFAULT NULL,                       \
         creationDate INTEGER DEFAULT CURRENT_TIMESTAMP NOT NULL, \
         modifiedDate INTEGER DEFAULT CURRENT_TIMESTAMP NOT NULL, \
-        isArchive    BOOLEAN DEFAULT FALSE NOT NULL,             \
+        isArchived   BOOLEAN DEFAULT FALSE NOT NULL,             \
         isHidden     BOOLEAN DEFAULT FALSE NOT NULL,             \
         isPinned     BOOLEAN DEFAULT FALSE NOT NULL,             \
         isDeleted    BOOLEAN DEFAULT FALSE NOT NULL              \
@@ -68,8 +70,49 @@ auto Backend::initDb() -> void {
       u"CREATE TABLE IF NOT EXISTS tags (      \
         id   INTEGER PRIMARY KEY,              \
         name TEXT    NOT NULL                  \
-      )"_s);
+      );"_s);
   query.exec();
+}
+
+auto Backend::readNotes() -> void {
+  auto query = QSqlQuery(u"SELECT * FROM notes;"_s);
+
+  auto readRecord = [&](const QString& column) {
+    return query.value(query.record().indexOf(column));
+  };
+
+  while (query.next()) {
+    auto* tmpNote = new Note(this);
+
+    tmpNote->setId(readRecord(u"id"_s).toInt());
+    tmpNote->setNotebookId(readRecord(u"notebookId"_s).toInt());
+    tmpNote->setTitle(readRecord(u"name"_s).toString());
+    tmpNote->setContent(readRecord(u"content"_s).toString());
+    tmpNote->setColor(QColor(readRecord(u"color"_s).toString()));
+    tmpNote->setCreationDate(
+        QDateTime::fromSecsSinceEpoch(readRecord(u"creationDate"_s).toInt()));
+    tmpNote->setModifiedDate(
+        QDateTime::fromSecsSinceEpoch(readRecord(u"modifiedDate"_s).toInt()));
+    tmpNote->setArchived(readRecord(u"isArchived"_s).toBool());
+    tmpNote->setHidden(readRecord(u"isHidden"_s).toBool());
+    tmpNote->setPinned(readRecord(u"isPinned"_s).toBool());
+    tmpNote->setDeleted(readRecord(u"isDeleted"_s).toBool());
+
+    m_notes << tmpNote;
+  }
+}
+
+auto Backend::notes() -> NoteList { return m_notes; }
+
+auto Backend::currentNote() -> Note* { return m_current_note; }
+
+auto Backend::setCurrentNote(Note* note) -> void {
+  if (note == m_current_note) {
+    return;
+  }
+
+  m_current_note = note;
+  Q_EMIT sigCurrentNote();
 }
 
 auto Backend::tags() -> QStringList {
@@ -114,9 +157,6 @@ auto Backend::addNotebook(const QString& name) -> void {
   }
 }
 
-
-auto Backend::quit() -> void {
-  QApplication::quit();
-}
+auto Backend::quit() -> void { QApplication::quit(); }
 
 #include "moc_backend.cpp"

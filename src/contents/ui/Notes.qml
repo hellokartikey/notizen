@@ -13,19 +13,24 @@ Kirigami.ScrollablePage {
 
   title: "Notes"
 
-  Kirigami.CardsLayout {
-    maximumColumns: 10
+  actions: [
+    Kirigami.Action {
+      text: "New Note"
+      icon.name: "list-add-symbolic"
+    }
+  ]
 
+  Kirigami.CardsLayout {
     minimumColumnWidth: Kirigami.Units.gridUnit * 12
-    maximumColumnWidth: Kirigami.Units.gridUnit * 12
+
+    maximumColumns: 3
 
     columnSpacing: Kirigami.Units.mediumSpacing
     rowSpacing: Kirigami.Units.mediumSpacing
 
     Repeater {
-      model: 5
-      delegate: Note {}
+      model: Backend.notes
+      delegate: NoteCard {}
     }
-
   }
 }

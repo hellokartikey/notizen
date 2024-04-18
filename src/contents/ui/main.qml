@@ -18,4 +18,12 @@ Kirigami.ApplicationWindow {
   pageStack.initialPage: Notes {}
 
   globalDrawer: SideBar {}
+
+  Component {
+    id: noteView
+
+    NoteView {}
+  }
+
+  function openNoteView() { pageStack.layers.push(noteView) }
 }

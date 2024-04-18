@@ -28,6 +28,25 @@ ListView {
 
     spacing: 0
 
+    Kirigami.PromptDialog {
+      id: newNotebookDialog
+
+      title: "New Notebook"
+
+      standardButtons: Kirigami.Dialog.Ok | Kirigami.Dialog.Cancel
+
+      Controls.TextField {
+        id: newNotebookTextField
+
+        placeholderText: "Notebook name..."
+      }
+
+      onAccepted: {
+        Backend.addNotebook(newNotebookTextField.text)
+        newNotebookTextField.clear()
+      }
+    }
+
     Kirigami.ListSectionHeader {
       Layout.fillWidth: true
       label: "Notebooks"
@@ -38,7 +57,7 @@ ListView {
       Layout.fillWidth: true
       text: "Add Notebook"
       icon.name: "bookmark-add-folder"
-      onClicked: { Backend.addNotebook("lmao" + count) }
+      onClicked: { newNotebookDialog.open() }
     }
   }
 
