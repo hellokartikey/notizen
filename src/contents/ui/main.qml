@@ -25,5 +25,7 @@ Kirigami.ApplicationWindow {
     NoteView {}
   }
 
-  function openNoteView() { pageStack.layers.push(noteView) }
+  function openNoteView() {
+    pageStack.layers.push(noteView);
+  }
 }

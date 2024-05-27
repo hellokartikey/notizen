@@ -24,15 +24,15 @@ auto Note::setNotebookId(int notebookId) -> void {
   Q_EMIT sigNotebookId();
 }
 
-auto Note::title() -> QString { return m_title; }
+auto Note::name() -> QString { return m_name; }
 
-auto Note::setTitle(const QString& title) -> void {
-  if (title == m_title) {
+auto Note::setName(const QString& name) -> void {
+  if (name == m_name) {
     return;
   }
 
-  m_title = title;
-  Q_EMIT sigTitle();
+  m_name = name;
+  Q_EMIT sigName();
 }
 
 auto Note::content() -> QString { return m_content; }

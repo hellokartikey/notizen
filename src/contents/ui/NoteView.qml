@@ -8,15 +8,35 @@ import Notizen
 Kirigami.Page {
   property var note: Backend.currentNote
 
-  title: note.title
+  title: note.name
 
   padding: 0
 
+  actions: [
+    Kirigami.Action {
+      text: "Edit"
+
+      onTriggered: {
+        if (editor.readOnly) {
+          editor.textFormat = Text.PlainText;
+        } else {
+          editor.textFormat = Text.MarkdownText;
+        }
+        editor.readOnly = !editor.readOnly;
+      }
+    }
+  ]
+
   Rectangle {
-    color: Kirigami.Theme.alternateBackgoundColor
+    id: background
+
+    color: Kirigami.Theme.View.backgroundColor
+
     anchors.fill: parent
 
     TextEdit {
+      id: editor
+
       anchors.fill: parent
       anchors.margins: Kirigami.Units.gridUnit
 

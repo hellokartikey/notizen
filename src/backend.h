@@ -7,6 +7,7 @@
 #include <QString>
 
 #include "note.h"
+#include "notebook.h"
 
 class Backend : public QObject {
   Q_OBJECT
@@ -16,7 +17,10 @@ class Backend : public QObject {
                  sigCurrentNote)
 
   Q_PROPERTY(QStringList tags READ tags NOTIFY sigHashTags)
-  Q_PROPERTY(QStringList notebooks READ notebooks NOTIFY sigNotebooks)
+
+  Q_PROPERTY(NotebookList notebooks READ notebooks NOTIFY sigNotebooks)
+  Q_PROPERTY(Notebook* currentNotebook READ currentNotebook WRITE
+                 setCurrentNotebook NOTIFY sigCurrentNotebook)
 
   Q_PROPERTY(bool isDbOk READ isDbOk NOTIFY sigIsDbOk)
 
@@ -30,16 +34,25 @@ class Backend : public QObject {
 
   // Notes related methods
   auto readNotes() -> void;
+
   auto notes() -> NoteList;
 
   auto currentNote() -> Note*;
-  auto setCurrentNote(Note* note) -> void;
+  auto setCurrentNote(Note* note = nullptr) -> void;
 
   // Tags related methods
   auto tags() -> QStringList;
 
   // Notebook related methods
-  auto notebooks() -> QStringList;
+  auto readNotebooks() -> void;
+
+  auto notebooks() -> NotebookList;
+
+  auto notebook(const QString& name) -> Notebook*;
+
+  auto currentNotebook() -> Notebook*;
+  auto setCurrentNotebook(Notebook* notebook = nullptr) -> void;
+
   Q_INVOKABLE void addNotebook(const QString& name);
 
   // Actions
@@ -50,14 +63,21 @@ class Backend : public QObject {
 
   auto sigNotes() -> void;
   auto sigCurrentNote() -> void;
+
   auto sigHashTags() -> void;
+
   auto sigNotebooks() -> void;
+  auto sigCurrentNotebook() -> void;
 
  private:
   QSqlDatabase m_db;
   bool m_ok;
+
   NoteList m_notes;
   Note* m_current_note = nullptr;
+
+  NotebookList m_notebooks;
+  Notebook* m_current_notebook = nullptr;
 };
 
 #endif

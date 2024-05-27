@@ -7,10 +7,12 @@ add_executable(
   main.cc
   backend.cc  backend.h
   note.cc     note.h
+  notebook.cc notebook.h
   resources.qrc)
 
 target_link_libraries(
   ${PROJECT_NAME}
+  fmt::fmt
   Qt6::Core
   Qt6::Widgets
   Qt6::Qml

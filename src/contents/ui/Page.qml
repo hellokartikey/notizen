@@ -9,12 +9,15 @@ Kirigami.Page {
   id: root
 
   Kirigami.InlineMessage {
-    anchors { left: parent.left; right: parent.right }
+    anchors {
+      left: parent.left
+      right: parent.right
+    }
 
     text: "Error reading database file."
 
     type: Kirigami.MessageType.Error
 
-    visible: ! Backend.isDbOk
+    visible: !Backend.isDbOk
   }
 }

@@ -24,6 +24,7 @@ Kirigami.GlobalDrawer {
 
   Column {
     Layout.fillWidth: true
+    Layout.fillHeight: true
 
     Notes {}
     Notebooks {}

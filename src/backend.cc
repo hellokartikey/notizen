@@ -1,8 +1,11 @@
 #include "backend.h"
 
+#include <fmt/core.h>
+
 #include <QApplication>
 #include <QSqlQuery>
 #include <QSqlRecord>
+#include <algorithm>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -13,7 +16,9 @@ Backend::Backend(QObject* parent) : QObject(parent) {
   m_ok = m_db.open();
 
   initDb();
+
   readNotes();
+  readNotebooks();
 }
 
 auto Backend::inst() -> Backend* {
@@ -55,23 +60,6 @@ auto Backend::initDb() -> void {
         name TEXT    NOT NULL UNIQUE           \
       );"_s);
   query.exec();
-
-  // attachments table
-  query.prepare(
-      u"CREATE TABLE IF NOT EXISTS attachments ( \
-        id      INTEGER PRIMARY KEY,             \
-        content BLOB    NOT NULL,                \
-        sha256  TEXT    NOT NULL UNIQUE          \
-      );"_s);
-  query.exec();
-
-  // hash tags table
-  query.prepare(
-      u"CREATE TABLE IF NOT EXISTS tags (      \
-        id   INTEGER PRIMARY KEY,              \
-        name TEXT    NOT NULL                  \
-      );"_s);
-  query.exec();
 }
 
 auto Backend::readNotes() -> void {
@@ -86,7 +74,7 @@ auto Backend::readNotes() -> void {
 
     tmpNote->setId(readRecord(u"id"_s).toInt());
     tmpNote->setNotebookId(readRecord(u"notebookId"_s).toInt());
-    tmpNote->setTitle(readRecord(u"name"_s).toString());
+    tmpNote->setName(readRecord(u"name"_s).toString());
     tmpNote->setContent(readRecord(u"content"_s).toString());
     tmpNote->setColor(QColor(readRecord(u"color"_s).toString()));
     tmpNote->setCreationDate(
@@ -130,31 +118,74 @@ auto Backend::tags() -> QStringList {
   return list;
 }
 
-auto Backend::notebooks() -> QStringList {
+auto Backend::readNotebooks() -> void {
   auto query = QSqlQuery{};
 
-  query.prepare(u"SELECT name FROM notebooks;"_s);
+  query.prepare(u"SELECT id, name FROM notebooks;"_s);
   query.exec();
 
-  auto list = QStringList{};
+  auto* other = new Notebook(this);
+  other->setId(0);
+  other->setName(u"Other"_s);
+  m_notebooks << other;
 
-  list << u"Other"_s;
+  setCurrentNotebook(other);
+
   while (query.next()) {
-    list << query.value(u"name"_s).toString();
+    auto* notebook = new Notebook(this);
+    notebook->setId(query.value(u"id"_s).toInt());
+    notebook->setName(query.value(u"name"_s).toString());
+    m_notebooks << notebook;
   }
 
-  return list;
+  Q_EMIT sigNotebooks();
+}
+
+auto Backend::notebooks() -> NotebookList { return m_notebooks; }
+
+auto Backend::notebook(const QString& name) -> Notebook* {
+  auto iter =
+      std::find_if(m_notebooks.begin(), m_notebooks.end(),
+                   [&](auto notebook) { return notebook->name() == name; });
+
+  if (iter == m_notebooks.end()) {
+    return nullptr;
+  }
+
+  return *iter;
+}
+
+auto Backend::currentNotebook() -> Notebook* { return m_current_notebook; }
+
+auto Backend::setCurrentNotebook(Notebook* notebook) -> void {
+  if (m_current_notebook == notebook) {
+    return;
+  }
+
+  m_current_notebook = notebook;
+  Q_EMIT sigCurrentNotebook();
 }
 
 auto Backend::addNotebook(const QString& name) -> void {
+  if (notebook(name) != nullptr) return;
+
   auto query = QSqlQuery{};
 
   query.prepare(u"INSERT INTO notebooks (name) VALUES (:name);"_s);
   query.bindValue(u":name"_s, name);
+  query.exec();
 
-  if (query.exec()) {
-    Q_EMIT sigNotebooks();
-  }
+  query.prepare(u"SELECT id, name FROM notebooks WHERE name = :name;"_s);
+  query.bindValue(u":name"_s, name);
+  query.exec();
+  query.first();
+
+  auto* notebook_ptr = new Notebook(this);
+  notebook_ptr->setId(query.value(u"id"_s).toInt());
+  notebook_ptr->setName(query.value(u"name"_s).toString());
+
+  m_notebooks << notebook_ptr;
+  Q_EMIT sigNotebooks();
 }
 
 auto Backend::quit() -> void { QApplication::quit(); }

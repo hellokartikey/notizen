@@ -21,8 +21,10 @@ ListView {
   height: headerHeight + (count * delegateHeight)
 
   Component.onCompleted: {
-    delegateHeight = currentItem.height
-    headerHeight = headerItem.height
+    if (Backend.tags.length) {
+      delegateHeight = currentItem.height;
+      headerHeight = headerItem.height;
+    }
   }
 
   header: Kirigami.ListSectionHeader {

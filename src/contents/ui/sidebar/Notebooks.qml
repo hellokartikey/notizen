@@ -19,8 +19,8 @@ ListView {
   height: headerHeight + (count * delegateHeight)
 
   Component.onCompleted: {
-    delegateHeight = currentItem.height
-    headerHeight = headerItem.height
+    delegateHeight = currentItem.height;
+    headerHeight = headerItem.height;
   }
 
   header: ColumnLayout {
@@ -42,8 +42,8 @@ ListView {
       }
 
       onAccepted: {
-        Backend.addNotebook(newNotebookTextField.text)
-        newNotebookTextField.clear()
+        Backend.addNotebook(newNotebookTextField.text);
+        newNotebookTextField.clear();
       }
     }
 
@@ -57,14 +57,22 @@ ListView {
       Layout.fillWidth: true
       text: "Add Notebook"
       icon.name: "bookmark-add-folder"
-      onClicked: { newNotebookDialog.open() }
+      onClicked: {
+        newNotebookDialog.open();
+      }
     }
   }
 
   delegate: Controls.ItemDelegate {
     id: delegateItem
-    text: modelData
+    text: modelData.name
     icon.name: "bookmarks"
     width: ListView.view.width
+
+    highlighted: Backend.currentNotebook == modelData
+
+    onClicked: {
+      Backend.currentNotebook = modelData;
+    }
   }
 }

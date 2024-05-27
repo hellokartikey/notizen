@@ -14,6 +14,8 @@ include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)
 
+find_package(fmt REQUIRED)
+
 find_package(Qt6 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS
   Core
   Quick
@@ -23,8 +25,6 @@ find_package(Qt6 ${QT_MIN_VERSION} REQUIRED NO_MODULE COMPONENTS
 
 find_package(KF6 ${KF_MIN_VERSION} REQUIRED COMPONENTS
   Kirigami2)
-
-find_package(KPim6AkonadiNotes REQUIRED)
 
 add_subdirectory(src)
 

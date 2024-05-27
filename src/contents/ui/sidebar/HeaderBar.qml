@@ -19,26 +19,27 @@ Controls.ToolBar {
 
     Kirigami.ActionToolBar {
       overflowIconName: "menu_new"
-      visible: ! Kirigami.Settings.isMobile
+      visible: !Kirigami.Settings.isMobile
 
       actions: [
         Kirigami.Action {
           text: "Settings"
           icon.name: "settings-configure"
         },
-
         Kirigami.Action {
           text: "About"
           icon.name: "help-about"
         },
-
-        Kirigami.Action { separator: true },
-
+        Kirigami.Action {
+          separator: true
+        },
         Kirigami.Action {
           text: "Quit"
           icon.name: "application-exit"
           shortcut: StandardKey.Quit
-          onTriggered: { Backend.quit() }
+          onTriggered: {
+            Backend.quit();
+          }
         }
       ]
     }

@@ -15,7 +15,7 @@ Kirigami.Card {
     Kirigami.Heading {
       Layout.fillWidth: true
 
-      text: modelData.title
+      text: modelData.name
       font.weight: Font.Bold
       font.bold: true
 
@@ -25,7 +25,9 @@ Kirigami.Card {
       elide: Text.ElideRight
     }
 
-    Kirigami.Separator { Layout.fillWidth: true }
+    Kirigami.Separator {
+      Layout.fillWidth: true
+    }
   }
 
   contentItem: Text {
@@ -39,8 +41,8 @@ Kirigami.Card {
   }
 
   onClicked: {
-    Backend.currentNote = modelData
-    openNoteView()
+    Backend.currentNote = modelData;
+    openNoteView();
   }
 
   actions: [
@@ -49,24 +51,20 @@ Kirigami.Card {
       text: "Pin"
       checkable: true
     },
-
     Kirigami.Action {
       icon.name: "color-management"
       text: "Color"
     },
-
     Kirigami.Action {
       icon.name: "archive-insert"
       text: "Archive"
       checkable: true
     },
-
     Kirigami.Action {
       icon.name: "view-hidden"
       text: "Hide"
       checkable: true
     },
-
     Kirigami.Action {
       icon.name: "delete"
       text: "Delete"

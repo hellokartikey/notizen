@@ -15,11 +15,13 @@ class Note : public QObject {
   Q_PROPERTY(int id READ id WRITE setId NOTIFY sigId)
   Q_PROPERTY(
       int notebookId READ notebookId WRITE setNotebookId NOTIFY sigNotebookId)
-  Q_PROPERTY(QString title READ title WRITE setTitle NOTIFY sigTitle)
+  Q_PROPERTY(QString name READ name WRITE setName NOTIFY sigName)
   Q_PROPERTY(QString content READ content WRITE setContent NOTIFY sigContent)
 
-  Q_PROPERTY(QDateTime creationDate READ creationDate WRITE setCreationDate NOTIFY sigCreationDate)
-  Q_PROPERTY(QDateTime modifiedDate READ modifiedDate WRITE setModifiedDate NOTIFY sigModifiedDate)
+  Q_PROPERTY(QDateTime creationDate READ creationDate WRITE setCreationDate
+                 NOTIFY sigCreationDate)
+  Q_PROPERTY(QDateTime modifiedDate READ modifiedDate WRITE setModifiedDate
+                 NOTIFY sigModifiedDate)
 
  public:
   explicit Note(QObject* parent = nullptr);
@@ -30,8 +32,8 @@ class Note : public QObject {
   auto notebookId() -> int;
   auto setNotebookId(int notebookId) -> void;
 
-  auto title() -> QString;
-  auto setTitle(const QString& title) -> void;
+  auto name() -> QString;
+  auto setName(const QString& name) -> void;
 
   auto content() -> QString;
   auto setContent(const QString& content) -> void;
@@ -61,7 +63,7 @@ class Note : public QObject {
   auto sigId() -> void;
   auto sigNotebookId() -> void;
 
-  auto sigTitle() -> void;
+  auto sigName() -> void;
   auto sigContent() -> void;
 
   auto sigColor() -> void;
@@ -78,7 +80,7 @@ class Note : public QObject {
   int m_note_id;
   int m_notebook;
 
-  QString m_title;
+  QString m_name;
   QString m_content;
 
   QColor m_color;
