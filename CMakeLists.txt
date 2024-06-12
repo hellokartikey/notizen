@@ -12,6 +12,8 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${ECM_MODULE_PATH}
 
 include(FeatureSummary)
 include(ECMSetupVersion)
+include(ECMQmlModule)
+include(ECMFindQmlModule)
 include(KDEInstallDirs)
 include(KDECMakeSettings)
 include(KDECompilerSettings NO_POLICY_SCOPE)

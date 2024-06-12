@@ -11,8 +11,7 @@ auto main(int argc, char* argv[]) -> int {
   auto engine = QQmlApplicationEngine{};
 
   qmlRegisterSingletonInstance("Notizen", 1, 0, "Backend", Backend::inst());
-
-  engine.load(u"qrc:/main.qml"_s);
+  engine.loadFromModule("Notizen", "Main");
 
   return app.exec();
 }
