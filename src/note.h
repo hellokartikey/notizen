@@ -5,6 +5,7 @@
 #include <QDateTime>
 #include <QList>
 #include <QObject>
+#include <QSqlQuery>
 #include <QString>
 
 class Attachment;
@@ -12,55 +13,100 @@ class Attachment;
 class Note : public QObject {
   Q_OBJECT
 
-  Q_PROPERTY(int id READ id WRITE setId NOTIFY sigId)
-  Q_PROPERTY(
-      int notebookId READ notebookId WRITE setNotebookId NOTIFY sigNotebookId)
-  Q_PROPERTY(QString name READ name WRITE setName NOTIFY sigName)
-  Q_PROPERTY(QString content READ content WRITE setContent NOTIFY sigContent)
+  // clang-format off
+  Q_PROPERTY(int id
+             READ id
+             CONSTANT)
 
-  Q_PROPERTY(QDateTime creationDate READ creationDate WRITE setCreationDate
-                 NOTIFY sigCreationDate)
-  Q_PROPERTY(QDateTime modifiedDate READ modifiedDate WRITE setModifiedDate
-                 NOTIFY sigModifiedDate)
+  Q_PROPERTY(int notebookId
+             READ notebookId
+             WRITE setNotebookId
+             NOTIFY sigNotebookId)
+
+  Q_PROPERTY(QString name
+             READ name
+             WRITE setName
+             NOTIFY sigName)
+
+  Q_PROPERTY(QString content
+             READ content
+             WRITE setContent
+             NOTIFY sigContent)
+
+  Q_PROPERTY(QDateTime creationDate
+             READ creationDate
+             WRITE setCreationDate
+             NOTIFY sigCreationDate)
+
+  Q_PROPERTY(QDateTime modifiedDate
+             READ modifiedDate
+             WRITE setModifiedDate
+             NOTIFY sigModifiedDate)
+
+  Q_PROPERTY(bool isArchived
+             READ isArchived
+             WRITE setArchived
+             NOTIFY sigArchived)
+
+  Q_PROPERTY(bool isHidden
+             READ isHidden
+             WRITE setHidden
+             NOTIFY sigHidden)
+
+  Q_PROPERTY(bool isPinned
+             READ isPinned
+             WRITE setPinned
+             NOTIFY sigPinned)
+
+  Q_PROPERTY(bool isDeleted
+             READ isDeleted
+             WRITE setDeleted
+             NOTIFY sigDeleted)
+  // clang-format on
 
  public:
   explicit Note(QObject* parent = nullptr);
 
-  auto id() -> int;
-  auto setId(int id) -> void;
+  static auto fromQuery(const QSqlQuery& query,
+                        QObject* parent = nullptr) -> Note*;
 
-  auto notebookId() -> int;
+  auto sync() -> void;
+
+  auto id() const -> int;
+
+  auto notebookId() const -> int;
   auto setNotebookId(int notebookId) -> void;
 
-  auto name() -> QString;
+  auto name() const -> QString;
   auto setName(const QString& name) -> void;
 
-  auto content() -> QString;
+  auto content() const -> QString;
   auto setContent(const QString& content) -> void;
 
-  auto color() -> QColor;
+  auto color() const -> QColor;
   auto setColor(const QColor& color) -> void;
 
-  auto creationDate() -> QDateTime;
-  auto setCreationDate(const QDateTime& date) -> void;
+  auto creationDate() const -> QDateTime;
+  auto setCreationDate(const QDateTime& date = QDateTime::currentDateTime())
+      -> void;
 
-  auto modifiedDate() -> QDateTime;
-  auto setModifiedDate(const QDateTime& date) -> void;
+  auto modifiedDate() const -> QDateTime;
+  auto setModifiedDate(const QDateTime& date = QDateTime::currentDateTime())
+      -> void;
 
-  auto isArchived() -> bool;
+  auto isArchived() const -> bool;
   auto setArchived(bool isArchived = true) -> void;
 
-  auto isHidden() -> bool;
+  auto isHidden() const -> bool;
   auto setHidden(bool isHidden = true) -> void;
 
-  auto isPinned() -> bool;
+  auto isPinned() const -> bool;
   auto setPinned(bool isPinned = true) -> void;
 
-  auto isDeleted() -> bool;
+  auto isDeleted() const -> bool;
   auto setDeleted(bool isDeleted = true) -> void;
 
  Q_SIGNALS:
-  auto sigId() -> void;
   auto sigNotebookId() -> void;
 
   auto sigName() -> void;

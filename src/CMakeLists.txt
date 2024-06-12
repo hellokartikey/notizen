@@ -1,13 +1,15 @@
-ecm_setup_version(${PROJECT_VERSION}
-  VARIABLE_PREFIX NOTIZEN
-  VERSION_HEADER version.h)
+ecm_setup_version(${PROJECT_VERSION} VARIABLE_PREFIX NOTIZEN VERSION_HEADER
+                  version.h)
 
 add_executable(
   ${PROJECT_NAME}
   main.cc
-  backend.cc  backend.h
-  note.cc     note.h
-  notebook.cc notebook.h
+  backend.cc
+  backend.h
+  note.cc
+  note.h
+  notebook.cc
+  notebook.h
   resources.qrc)
 
 target_link_libraries(
@@ -18,7 +20,6 @@ target_link_libraries(
   Qt6::Qml
   Qt6::Quick
   Qt6::QuickControls2
-  Qt6::Sql
-  KF6::Kirigami2)
+  Qt6::Sql)
 
 install(TARGETS ${PROJECT_NAME} ${KDE_INSTALL_TARGETS_DEFAULT_ARGS})

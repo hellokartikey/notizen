@@ -1,7 +1,5 @@
 #include "backend.h"
 
-#include <fmt/core.h>
-
 #include <QApplication>
 #include <QSqlQuery>
 #include <QSqlRecord>
@@ -65,26 +63,8 @@ auto Backend::initDb() -> void {
 auto Backend::readNotes() -> void {
   auto query = QSqlQuery(u"SELECT * FROM notes;"_s);
 
-  auto readRecord = [&](const QString& column) {
-    return query.value(query.record().indexOf(column));
-  };
-
   while (query.next()) {
-    auto* tmpNote = new Note(this);
-
-    tmpNote->setId(readRecord(u"id"_s).toInt());
-    tmpNote->setNotebookId(readRecord(u"notebookId"_s).toInt());
-    tmpNote->setName(readRecord(u"name"_s).toString());
-    tmpNote->setContent(readRecord(u"content"_s).toString());
-    tmpNote->setColor(QColor(readRecord(u"color"_s).toString()));
-    tmpNote->setCreationDate(
-        QDateTime::fromSecsSinceEpoch(readRecord(u"creationDate"_s).toInt()));
-    tmpNote->setModifiedDate(
-        QDateTime::fromSecsSinceEpoch(readRecord(u"modifiedDate"_s).toInt()));
-    tmpNote->setArchived(readRecord(u"isArchived"_s).toBool());
-    tmpNote->setHidden(readRecord(u"isHidden"_s).toBool());
-    tmpNote->setPinned(readRecord(u"isPinned"_s).toBool());
-    tmpNote->setDeleted(readRecord(u"isDeleted"_s).toBool());
+    auto* tmpNote = Note::fromQuery(query, this);
 
     m_notes << tmpNote;
   }
@@ -100,6 +80,33 @@ auto Backend::setCurrentNote(Note* note) -> void {
   }
 
   m_current_note = note;
+  Q_EMIT sigCurrentNote();
+}
+
+void Backend::addNote(const QString& name) {
+  auto query = QSqlQuery{};
+
+  query.prepare(
+      u"INSERT INTO notes (notebookId, name) VALUES (:notebookId, :name);"_s);
+  if (currentNotebook() && currentNotebook()->id() != 0) {
+    query.bindValue(u":notebookId"_s, currentNotebook()->id());
+  }
+  query.bindValue(u":name"_s, name);
+  query.exec();
+
+  query.prepare(u"SELECT * FROM notes WHERE name = :name;"_s);
+  query.bindValue(u":name"_s, name);
+  query.exec();
+  query.first();
+
+  auto* note_ptr = Note::fromQuery(query, this);
+  note_ptr->setCreationDate();
+  note_ptr->setModifiedDate();
+
+  m_notes << note_ptr;
+  Q_EMIT sigNotes();
+
+  setCurrentNote(note_ptr);
   Q_EMIT sigCurrentNote();
 }
 
