@@ -7,14 +7,18 @@ ToolBar {
 
   leftPadding: 0
 
-  Row {
+  RowLayout {
     anchors.fill: parent
+
+    spacing: 0
 
     Item {
       id: sideBarSpacer
 
       height: 10
-      width: sideBar.drawerWidth - sideBarSeparator.width
+
+      // HACK: this feels like a hack... idk
+      Layout.preferredWidth: sideBar.drawerWidth - sideBarSeparator.width
     }
 
     ToolSeparator {
@@ -35,7 +39,12 @@ ToolBar {
       }
     }
 
+    Item {
+      Layout.fillWidth: true
+    }
+
     ToolButton {
+      text: "Debug"
       icon.name: "debug-run"
 
       onClicked: {

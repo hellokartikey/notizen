@@ -6,8 +6,11 @@ ApplicationWindow {
 
   title: "Notizen"
 
-  minimumHeight: 700
-  minimumWidth: 1000
+  minimumHeight: 500
+  minimumWidth: 500
+
+  height: 700
+  width: 1000
 
   visible: true
 

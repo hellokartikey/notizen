@@ -10,7 +10,7 @@ Drawer {
   readonly property real defaultWidth: 300
   readonly property real minimumWidth: 200
   readonly property real maximumWidth: 400
-  readonly property real dragThreshold: 10
+  readonly property real dragThreshold: 20
 
   interactive: false
   modal: false
@@ -29,17 +29,32 @@ Drawer {
 
     x: defaultWidth
 
+    Rectangle {
+      id: dragHighlight
+
+      anchors.centerIn: parent
+
+      height: parent.height
+      width: 1
+
+      color: palette.highlight
+
+      visible: dragMouseArea.containsMouse
+    }
+
     MouseArea {
       id: dragMouseArea
 
       anchors.fill: parent
 
-      cursorShape: Qt.SizeHorCursor
+      hoverEnabled: true
+      cursorShape: pressed ? Qt.DragMoveCursor : Qt.SplitHCursor
 
       drag.target: dragAreaRect
       drag.axis: Drag.XAxis
       drag.minimumX: minimumWidth
       drag.maximumX: maximumWidth
+      drag.threshold: 0
     }
   }
 }
