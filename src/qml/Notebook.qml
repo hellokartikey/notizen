@@ -5,14 +5,17 @@ import QtQuick.Layouts
 Column {
   id: root
 
+  required property string text
   required property var notebook
+  property bool showAdd: true
+  default property string iconName: "folder-notes-symbolic"
 
   ItemDelegate {
     anchors.left: parent.left
     anchors.right: parent.right
 
-    text: notebook.name
-    icon.name: inside.show ? "folder-notes-symbolic" : "arrow-right"
+    text: root.text
+    icon.name: iconName
 
     onClicked: {
       inside.show = ! inside.show;
@@ -37,12 +40,13 @@ Column {
 
       text: "Add note"
       icon.name: "list-add-symbolic"
+      visible: root.showAdd
     }
 
     Repeater {
       id: rep
 
-      model: Backend.notesInNotebook(notebook)
+      model: notebook
 
       delegate: ItemDelegate {
         required property var modelData
@@ -53,6 +57,8 @@ Column {
 
         text: modelData.name
         icon.name: "note-symbolic"
+
+        onClicked: { openNote(modelData.name) }
       }
     }
 

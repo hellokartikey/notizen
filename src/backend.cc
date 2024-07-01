@@ -83,6 +83,18 @@ auto Backend::setCurrentNote(Note* note) -> void {
   Q_EMIT sigCurrentNote();
 }
 
+auto Backend::note(const QString& name) -> Note* {
+  auto iter =
+      std::find_if(m_notes.begin(), m_notes.end(),
+                   [&](auto note) { return note->name() == name; });
+
+  if (iter == m_notes.end()) {
+    return nullptr;
+  }
+
+  return *iter;
+}
+
 void Backend::addNote(const QString& name) {
   auto query = QSqlQuery{};
 

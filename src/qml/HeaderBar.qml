@@ -44,21 +44,12 @@ ToolBar {
     }
 
     ToolButton {
-      text: "Push"
-      icon.name: "vcs-stash"
+      text: "Close"
+      icon.name: "tab-close-symbolic"
+      visible: Backend.currentNote != null
 
       onClicked: {
-        stack.push(noteView)
-      }
-    }
-
-    ToolButton {
-      text: "Pop"
-      icon.name: "vcs-stash-pop"
-      visible: stack.depth > 1
-
-      onClicked: {
-        stack.pop()
+        closeNote()
       }
     }
   }

@@ -14,8 +14,4 @@ Page {
 
     text: "No file open."
   }
-
-  Image {
-    source: icon.url("list-add")
-  }
 }

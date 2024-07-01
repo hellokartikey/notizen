@@ -56,6 +56,8 @@ class Backend : public QObject {
   auto currentNote() -> Note*;
   auto setCurrentNote(Note* note = nullptr) -> void;
 
+  Q_INVOKABLE Note* note(const QString& name);
+
   // BUG: Fix date time parsing
   Q_INVOKABLE void addNote(const QString& name);
 

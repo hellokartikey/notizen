@@ -5,6 +5,8 @@ import QtQuick.Layouts
 Page {
   id: root
 
+  property var note: Backend.currentNote
+
   background: Rectangle {
     color: palette.light
   }
@@ -12,6 +14,6 @@ Page {
   Text {
     anchors.fill: parent
 
-    text: "Hello, world"
+    text: note.content
   }
 }
