@@ -7,8 +7,8 @@ Drawer {
 
   property real drawerWidth: width * position
 
-  readonly property real defaultWidth: 300
-  readonly property real minimumWidth: 200
+  readonly property real defaultWidth: 200
+  readonly property real minimumWidth: 100
   readonly property real maximumWidth: 400
   readonly property real dragThreshold: 20
 
@@ -20,6 +20,30 @@ Drawer {
 
   height: parent.height
   width: dragAreaRect.x + (dragAreaRect.width / 2)
+
+  Column {
+    anchors.fill: parent
+
+    ItemDelegate {
+      anchors.left: parent.left
+      anchors.right: parent.right
+
+      text: "Add Notebook"
+      icon.name: "list-add-symbolic"
+    }
+
+    Repeater {
+      model: Backend.notebooks
+      delegate: Notebook {
+        required property var modelData
+
+        anchors.left: parent.left
+        anchors.right: parent.right
+
+        notebook: modelData
+      }
+    }
+  }
 
   Item {
     id: dragAreaRect

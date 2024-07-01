@@ -9,13 +9,9 @@ Page {
     color: palette.light
   }
 
-  Label {
-    anchors.centerIn: parent
+  Text {
+    anchors.fill: parent
 
-    text: "No file open."
-  }
-
-  Image {
-    source: icon.url("list-add")
+    text: "Hello, world"
   }
 }

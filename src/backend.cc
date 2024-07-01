@@ -131,19 +131,19 @@ auto Backend::readNotebooks() -> void {
   query.prepare(u"SELECT id, name FROM notebooks;"_s);
   query.exec();
 
-  auto* other = new Notebook(this);
-  other->setId(0);
-  other->setName(u"Other"_s);
-  m_notebooks << other;
-
-  setCurrentNotebook(other);
-
   while (query.next()) {
     auto* notebook = new Notebook(this);
     notebook->setId(query.value(u"id"_s).toInt());
     notebook->setName(query.value(u"name"_s).toString());
     m_notebooks << notebook;
   }
+
+  auto* other = new Notebook(this);
+  other->setId(0);
+  other->setName(u"Others"_s);
+  m_notebooks << other;
+
+  setCurrentNotebook(other);
 
   Q_EMIT sigNotebooks();
 }
@@ -171,6 +171,18 @@ auto Backend::setCurrentNotebook(Notebook* notebook) -> void {
 
   m_current_notebook = notebook;
   Q_EMIT sigCurrentNotebook();
+}
+
+auto Backend::notesInNotebook(const Notebook* notebook) -> NoteList {
+  auto list = NoteList{};
+
+  for (auto* note: m_notes) {
+    if (note->notebookId() == notebook->id()) {
+      list << note;
+    }
+  }
+
+  return list;
 }
 
 auto Backend::addNotebook(const QString& name) -> void {

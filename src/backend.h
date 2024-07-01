@@ -12,17 +12,33 @@
 class Backend : public QObject {
   Q_OBJECT
 
-  Q_PROPERTY(NoteList notes READ notes NOTIFY sigNotes)
-  Q_PROPERTY(Note* currentNote READ currentNote WRITE setCurrentNote NOTIFY
-                 sigCurrentNote)
+  // clang-format off
+  Q_PROPERTY(NoteList     notes
+             READ         notes
+             NOTIFY       sigNotes)
 
-  Q_PROPERTY(QStringList tags READ tags NOTIFY sigHashTags)
+  Q_PROPERTY(Note*        currentNote
+             READ         currentNote
+             WRITE        setCurrentNote
+             NOTIFY       sigCurrentNote)
 
-  Q_PROPERTY(NotebookList notebooks READ notebooks NOTIFY sigNotebooks)
-  Q_PROPERTY(Notebook* currentNotebook READ currentNotebook WRITE
-                 setCurrentNotebook NOTIFY sigCurrentNotebook)
+  Q_PROPERTY(QStringList  tags
+             READ         tags
+             NOTIFY       sigHashTags)
 
-  Q_PROPERTY(bool isDbOk READ isDbOk NOTIFY sigIsDbOk)
+  Q_PROPERTY(NotebookList notebooks
+             READ         notebooks
+             NOTIFY       sigNotebooks)
+
+  Q_PROPERTY(Notebook*    currentNotebook
+             READ         currentNotebook
+             WRITE        setCurrentNotebook
+             NOTIFY       sigCurrentNotebook)
+
+  Q_PROPERTY(bool         isDbOk
+             READ         isDbOk
+             NOTIFY       sigIsDbOk)
+  // clang-format on
 
  public:
   explicit Backend(QObject* parent = nullptr);
@@ -55,6 +71,8 @@ class Backend : public QObject {
 
   auto currentNotebook() -> Notebook*;
   auto setCurrentNotebook(Notebook* notebook = nullptr) -> void;
+
+  Q_INVOKABLE NoteList notesInNotebook(const Notebook* notebook);
 
   Q_INVOKABLE void addNotebook(const QString& name);
 

@@ -22,10 +22,27 @@ ApplicationWindow {
     id: sideBar
   }
 
-  HomePage {
-    id: homePage
+  StackView {
+    id: stack
+    initialItem: homeView
 
     anchors.fill: parent
     anchors.leftMargin: sideBar.drawerWidth
+  }
+
+  Component {
+    id: homeView
+
+    HomePage {
+      id: homePage
+    }
+  }
+
+  Component {
+    id: noteView
+
+    NoteView {
+      id: notePage
+    }
   }
 }

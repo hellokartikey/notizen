@@ -44,12 +44,21 @@ ToolBar {
     }
 
     ToolButton {
-      text: "Debug"
-      icon.name: "debug-run"
+      text: "Push"
+      icon.name: "vcs-stash"
 
       onClicked: {
-        console.log(`opened: ${sideBar.opened}`);
-        console.log(`visible: ${sideBar.visible}`);
+        stack.push(noteView)
+      }
+    }
+
+    ToolButton {
+      text: "Pop"
+      icon.name: "vcs-stash-pop"
+      visible: stack.depth > 1
+
+      onClicked: {
+        stack.pop()
       }
     }
   }
