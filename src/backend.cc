@@ -150,13 +150,6 @@ auto Backend::readNotebooks() -> void {
     m_notebooks << notebook;
   }
 
-  auto* other = new Notebook(this);
-  other->setId(0);
-  other->setName(u"Others"_s);
-  m_notebooks << other;
-
-  setCurrentNotebook(other);
-
   Q_EMIT sigNotebooks();
 }
 

@@ -7,10 +7,13 @@ Column {
 
   required property string text
   required property var notebook
-  property bool showAdd: true
   default property string iconName: "folder-notes-symbolic"
+  property bool showAdd: true
+  property bool show: false
 
   ItemDelegate {
+    id: notebookButton
+
     anchors.left: parent.left
     anchors.right: parent.right
 
@@ -18,7 +21,17 @@ Column {
     icon.name: iconName
 
     onClicked: {
-      inside.show = ! inside.show;
+      show = ! show;
+    }
+
+    Text {
+      anchors.verticalCenter: parent.verticalCenter
+      anchors.right: parent.right
+      anchors.rightMargin: 12
+
+      horizontalAlignment: Text.AlignRight
+
+      text: notebook ? notebook.length : 0
     }
   }
 
@@ -28,11 +41,10 @@ Column {
     anchors.left: parent.left
     anchors.right: parent.right
 
-    property bool show: false
-
     height: show ? implicitHeight : 0
     clip: true
 
+    /**
     ItemDelegate {
       anchors.left: parent.left
       anchors.right: parent.right
@@ -42,6 +54,7 @@ Column {
       icon.name: "list-add-symbolic"
       visible: root.showAdd
     }
+    */
 
     Repeater {
       id: rep
@@ -59,13 +72,24 @@ Column {
         icon.name: "note-symbolic"
 
         onClicked: { openNote(modelData.name) }
+
+        Rectangle {
+          id: verLine
+
+          anchors.right: parent.left
+          anchors.rightMargin: parent.icon.width / 3
+
+          height: parent.height
+          width: 1
+
+          color: palette.mid
+        }
       }
     }
 
     Behavior on height {
       NumberAnimation {
-        duration: 200
-        easing.type: Easing.InOutQuad
+        easing.type: Easing.OutQuad
       }
     }
   }

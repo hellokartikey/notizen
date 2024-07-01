@@ -12,6 +12,6 @@ Page {
   Label {
     anchors.centerIn: parent
 
-    text: "No file open."
+    text: "No note is open."
   }
 }

@@ -7,8 +7,17 @@
 class Notebook : public QObject {
   Q_OBJECT;
 
-  Q_PROPERTY(int id READ id WRITE setId NOTIFY sigId);
-  Q_PROPERTY(QString name READ name WRITE setName NOTIFY sigName);
+  // clang-format off
+  Q_PROPERTY(int     id
+             READ    id
+             WRITE   setId
+             NOTIFY  sigId)
+
+  Q_PROPERTY(QString name
+             READ    name
+             WRITE   setName
+             NOTIFY  sigName)
+  // clang-format on
 
  public:
   explicit Notebook(QObject* parent = nullptr);
