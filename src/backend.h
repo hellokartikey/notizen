@@ -6,6 +6,7 @@
 #include <QSqlDatabase>
 #include <QString>
 
+#include "fwd.h"
 #include "note.h"
 #include "notebook.h"
 
@@ -16,6 +17,10 @@ class Backend : public QObject {
   Q_PROPERTY(NoteList     notes
              READ         notes
              NOTIFY       sigNotes)
+
+  Q_PROPERTY(NoteList     allNotes
+             READ         allNotes
+             NOTIFY       sigAllNotes)
 
   Q_PROPERTY(Note*        currentNote
              READ         currentNote
@@ -53,6 +58,9 @@ class Backend : public QObject {
 
   auto notes() -> NoteList;
 
+  auto allNotes() -> NoteList;
+  auto registerNote(Note* note) -> void;
+
   auto currentNote() -> Note*;
   auto setCurrentNote(Note* note = nullptr) -> void;
 
@@ -85,6 +93,7 @@ class Backend : public QObject {
   auto sigIsDbOk() -> void;
 
   auto sigNotes() -> void;
+  auto sigAllNotes() -> void;
   auto sigCurrentNote() -> void;
 
   auto sigHashTags() -> void;
@@ -98,6 +107,8 @@ class Backend : public QObject {
 
   NoteList m_notes;
   Note* m_current_note = nullptr;
+
+  NoteList m_all_notes;
 
   NotebookList m_notebooks;
   Notebook* m_current_notebook = nullptr;

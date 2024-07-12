@@ -6,9 +6,12 @@ Column {
   id: root
 
   required property string text
-  required property var notebook
+
+  property var notes
+  property var notebooks
+
   default property string iconName: "folder-notes-symbolic"
-  property bool showAdd: true
+  
   property bool show: false
 
   ItemDelegate {
@@ -31,7 +34,7 @@ Column {
 
       horizontalAlignment: Text.AlignRight
 
-      text: notebook ? notebook.length : 0
+      text: notebooks ? notebooks.size : 0
     }
   }
 
@@ -44,22 +47,10 @@ Column {
     height: show ? implicitHeight : 0
     clip: true
 
-    /**
-    ItemDelegate {
-      anchors.left: parent.left
-      anchors.right: parent.right
-      anchors.leftMargin: icon.width
-
-      text: "Add note"
-      icon.name: "list-add-symbolic"
-      visible: root.showAdd
-    }
-    */
-
     Repeater {
-      id: rep
+      id: notesRepeater
 
-      model: notebook
+      model: notes
 
       delegate: ItemDelegate {
         required property var modelData

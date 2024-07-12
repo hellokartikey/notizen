@@ -8,74 +8,76 @@
 #include <QSqlQuery>
 #include <QString>
 
-class Attachment;
+#include "fwd.h"
 
 class Note : public QObject {
   Q_OBJECT
 
   // clang-format off
-  Q_PROPERTY(int id
-             READ id
+  Q_PROPERTY(int       id
+             READ      id
              CONSTANT)
 
-  Q_PROPERTY(int notebookId
-             READ notebookId
-             WRITE setNotebookId
-             NOTIFY sigNotebookId)
+  Q_PROPERTY(Notebook* notebook
+             READ      notebook
+             WRITE     setNotebook
+             NOTIFY    sigNotebook)
 
-  Q_PROPERTY(QString name
-             READ name
-             WRITE setName
-             NOTIFY sigName)
+  Q_PROPERTY(QString   name
+             READ      name
+             WRITE     setName
+             NOTIFY    sigName)
 
-  Q_PROPERTY(QString content
-             READ content
-             WRITE setContent
-             NOTIFY sigContent)
+  Q_PROPERTY(QString   content
+             READ      content
+             WRITE     setContent
+             NOTIFY    sigContent)
 
   Q_PROPERTY(QDateTime creationDate
-             READ creationDate
-             WRITE setCreationDate
-             NOTIFY sigCreationDate)
+             READ      creationDate
+             WRITE     setCreationDate
+             NOTIFY    sigCreationDate)
 
   Q_PROPERTY(QDateTime modifiedDate
-             READ modifiedDate
-             WRITE setModifiedDate
-             NOTIFY sigModifiedDate)
+             READ      modifiedDate
+             WRITE     setModifiedDate
+             NOTIFY    sigModifiedDate)
 
-  Q_PROPERTY(bool isArchived
-             READ isArchived
-             WRITE setArchived
-             NOTIFY sigArchived)
+  Q_PROPERTY(bool      isArchived
+             READ      isArchived
+             WRITE     setArchived
+             NOTIFY    sigArchived)
 
-  Q_PROPERTY(bool isHidden
-             READ isHidden
-             WRITE setHidden
-             NOTIFY sigHidden)
+  Q_PROPERTY(bool      isHidden
+             READ      isHidden
+             WRITE     setHidden
+             NOTIFY    sigHidden)
 
-  Q_PROPERTY(bool isPinned
-             READ isPinned
-             WRITE setPinned
-             NOTIFY sigPinned)
+  Q_PROPERTY(bool      isPinned
+             READ      isPinned
+             WRITE     setPinned
+             NOTIFY    sigPinned)
 
-  Q_PROPERTY(bool isDeleted
-             READ isDeleted
-             WRITE setDeleted
-             NOTIFY sigDeleted)
+  Q_PROPERTY(bool      isDeleted
+             READ      isDeleted
+             WRITE     setDeleted
+             NOTIFY    sigDeleted)
   // clang-format on
 
  public:
   explicit Note(QObject* parent = nullptr);
 
   static auto fromQuery(const QSqlQuery& query,
-                        QObject* parent = nullptr) -> Note*;
+                        QObject* parent = nullptr,
+                        bool isGlobal = false) -> Note*;
 
   auto sync() -> void;
 
   auto id() const -> int;
 
+  auto notebook() -> Notebook*;
+  auto setNotebook(Notebook* notebook) -> void;
   auto notebookId() const -> int;
-  auto setNotebookId(int notebookId) -> void;
 
   auto name() const -> QString;
   auto setName(const QString& name) -> void;
@@ -107,7 +109,7 @@ class Note : public QObject {
   auto setDeleted(bool isDeleted = true) -> void;
 
  Q_SIGNALS:
-  auto sigNotebookId() -> void;
+  auto sigNotebook() -> void;
 
   auto sigName() -> void;
   auto sigContent() -> void;
@@ -124,7 +126,8 @@ class Note : public QObject {
 
  private:
   int m_note_id;
-  int m_notebook;
+
+  Notebook* m_notebook;
 
   QString m_name;
   QString m_content;
@@ -140,9 +143,6 @@ class Note : public QObject {
   bool m_is_deleted;
 
   QStringList m_tags;
-  QList<Attachment*> m_attachments;
 };
-
-using NoteList = QList<Note*>;
 
 #endif

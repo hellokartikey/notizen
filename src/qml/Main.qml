@@ -43,36 +43,6 @@ ApplicationWindow {
 
         width: scroll.width - scroll.effectiveScrollBarWidth
 
-        Notebook {
-          anchors.left: parent.left
-          anchors.right: parent.right
-
-          text: "All Notes"
-          iconName: "note-symbolic"
-          notebook: Backend.notes
-        }
-
-        Notebook {
-          anchors.left: parent.left
-          anchors.right: parent.right
-
-          text: "Archived"
-          iconName: "folder-symbolic"
-          notebook: undefined
-          showAdd: false
-        }
-
-        Notebook {
-          anchors.left: parent.left
-          anchors.right: parent.right
-
-          text: "Deleted"
-          iconName: "delete-symbolic"
-          notebook: undefined
-          showAdd: false
-        }
-
-        MenuSeparator {}
 
         ItemDelegate {
           anchors.left: parent.left
@@ -91,7 +61,8 @@ ApplicationWindow {
             anchors.left: parent.left
             anchors.right: parent.right
 
-            notebook: Backend.notesInNotebook(modelData)
+            notebooks: modelData.notebooks
+            notes: modelData.notes
             text: modelData.name
           }
         }

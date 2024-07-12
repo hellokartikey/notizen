@@ -1,12 +1,17 @@
 #include "note.h"
 
+#include "backend.h"
+#include "notebook.h"
+
 #include <QSqlError>
+
+#include <fmt/core.h>
+
+using namespace Qt::Literals::StringLiterals;
 
 Note::Note(QObject* parent) : QObject(parent) {}
 
-auto Note::fromQuery(const QSqlQuery& query, QObject* parent) -> Note* {
-  using namespace Qt::Literals::StringLiterals;
-
+auto Note::fromQuery(const QSqlQuery& query, QObject* parent, bool isGlobal) -> Note* {
   auto readInt = [&](const QString& name) { return query.value(name).toInt(); };
 
   auto readString = [&](const QString& name) {
@@ -28,23 +33,27 @@ auto Note::fromQuery(const QSqlQuery& query, QObject* parent) -> Note* {
   auto* note = new Note(parent);
 
   note->m_note_id = readInt(u"id"_s);
-  note->m_notebook = readInt(u"notebookId"_s);
-  note->m_name = readString(u"name"_s);
-  note->m_content = readString(u"content"_s);
-  note->m_color = readColor(u"color"_s);
-  note->m_creation_date = readTime(u"creationDate"_s);
-  note->m_modified_date = readTime(u"modifiedDate"_s);
-  note->m_is_archived = readBool(u"isArchived"_s);
-  note->m_is_hidden = readBool(u"isHidden"_s);
-  note->m_is_pinned = readBool(u"isPinned"_s);
-  note->m_is_deleted = readBool(u"isDeleted"_s);
+
+  if (isGlobal) {
+    note->setNotebook(nullptr);
+  } else {
+    note->setNotebook(qobject_cast<Notebook*>(parent));
+  }
+
+  note->setName(readString(u"name"_s));
+  note->setContent(readString(u"content"_s));
+  note->setColor(readColor(u"color"_s));
+  note->setCreationDate(readTime(u"creationDate"_s));
+  note->setModifiedDate(readTime(u"modifiedDate"_s));
+  note->setArchived(readBool(u"isArchived"_s));
+  note->setHidden(readBool(u"isHidden"_s));
+  note->setPinned(readBool(u"isPinned"_s));
+  note->setDeleted(readBool(u"isDeleted"_s));
 
   return note;
 }
 
 auto Note::sync() -> void {
-  using namespace Qt::Literals::StringLiterals;
-
   m_modified_date = QDateTime::currentDateTime();
 
   auto query = QSqlQuery{};
@@ -79,16 +88,24 @@ auto Note::sync() -> void {
 
 auto Note::id() const -> int { return m_note_id; }
 
-auto Note::notebookId() const -> int { return m_notebook; }
+auto Note::notebookId() const -> int {
+  if (m_notebook) {
+    return m_notebook->id();
+  }
 
-auto Note::setNotebookId(int notebookId) -> void {
-  if (m_notebook == notebookId) {
+  return 0;
+}
+
+auto Note::notebook() -> Notebook* { return m_notebook; }
+
+auto Note::setNotebook(Notebook* notebook) -> void {
+  if (m_notebook == notebook) {
     return;
   }
 
-  m_notebook = notebookId;
+  m_notebook = notebook;
   sync();
-  Q_EMIT sigNotebookId();
+  Q_EMIT sigNotebook();
 }
 
 auto Note::name() const -> QString { return m_name; }

@@ -3,7 +3,10 @@
 #include <QApplication>
 #include <QSqlQuery>
 #include <QSqlRecord>
+
 #include <algorithm>
+
+#include <fmt/core.h>
 
 using namespace Qt::Literals::StringLiterals;
 
@@ -15,8 +18,8 @@ Backend::Backend(QObject* parent) : QObject(parent) {
 
   initDb();
 
-  readNotes();
   readNotebooks();
+  readNotes();
 }
 
 auto Backend::inst() -> Backend* {
@@ -54,23 +57,37 @@ auto Backend::initDb() -> void {
   // notebooks table
   query.prepare(
       u"CREATE TABLE IF NOT EXISTS notebooks ( \
-        id   INTEGER PRIMARY KEY,              \
-        name TEXT    NOT NULL UNIQUE           \
+        id      INTEGER PRIMARY KEY,           \
+        name    TEXT    NOT NULL UNIQUE,       \
+        parent  INTEGER                        \
       );"_s);
   query.exec();
 }
 
 auto Backend::readNotes() -> void {
-  auto query = QSqlQuery(u"SELECT * FROM notes;"_s);
+  auto query = QSqlQuery(u"SELECT * FROM notes WHERE notebookId IS NULL;"_s);
 
   while (query.next()) {
-    auto* tmpNote = Note::fromQuery(query, this);
+    auto* tmpNote = Note::fromQuery(query, this, true);
 
     m_notes << tmpNote;
   }
 }
 
 auto Backend::notes() -> NoteList { return m_notes; }
+
+auto Backend::allNotes() -> NoteList { return m_all_notes; }
+
+auto Backend::registerNote(Note* note) -> void {
+  auto iter = std::find(m_notes.begin(), m_notes.end(), note);
+
+  if (iter == m_all_notes.end()) {
+    return;
+  }
+
+  m_all_notes << note;
+  Q_EMIT sigAllNotes();
+}
 
 auto Backend::currentNote() -> Note* { return m_current_note; }
 
@@ -140,13 +157,15 @@ auto Backend::tags() -> QStringList {
 auto Backend::readNotebooks() -> void {
   auto query = QSqlQuery{};
 
-  query.prepare(u"SELECT id, name FROM notebooks;"_s);
+  query.prepare(u"SELECT id, name FROM notebooks WHERE parent IS NULL;"_s);
   query.exec();
 
   while (query.next()) {
     auto* notebook = new Notebook(this);
     notebook->setId(query.value(u"id"_s).toInt());
     notebook->setName(query.value(u"name"_s).toString());
+    notebook->readChildren();
+    notebook->readNotes();
     m_notebooks << notebook;
   }
 
