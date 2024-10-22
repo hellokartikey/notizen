@@ -21,6 +21,7 @@ PRIVATE
   Qt6::Core
   Qt6::Quick
   Qt6::Gui
+  Qt6::QuickControls2
   fmt::fmt
   libassert::assert
 )

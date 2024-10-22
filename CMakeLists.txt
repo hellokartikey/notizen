@@ -16,12 +16,13 @@ COMPONENTS
   Core
   Gui
   Quick
+  QuickControls2
 )
 
 find_package(fmt REQUIRED)
 find_package(libassert REQUIRED)
 
-qt_standard_project_setup(REQUIRES 6.5)
+qt_standard_project_setup()
 
 qt_policy(SET QTP0001 NEW)
 

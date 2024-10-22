@@ -9,36 +9,63 @@ ApplicationWindow {
 
   visible: true
 
-  Page {
-    id: page
-    anchors.fill: parent
+  SideBar {
+    id: sideBar
 
-    header: ToolBar {}
+    parentItem: root
 
-    TreeView {
-      id: treeView
-
+    Page {
       anchors.fill: parent
-      model: Backend.tree
 
-      rootIndex: model.rootIndex
-
-      delegate: Item {
-        implicitHeight: 30
-        implicitWidth: page.width
-
-        required property int hasChildren
-
-        ItemDelegate {
-          anchors.fill: parent
-          anchors.leftMargin: treeView.depth(row) * 20
-
-          text: model.fileName
-          icon.name: hasChildren ? "folder-symbolic" : "text-plain"
-
-          onClicked: { treeView.toggleExpanded(row) }
+      header: ToolBar {
+        ToolButton {
+          icon.name: "debug-step-instruction"
+          text: "Debug"
         }
       }
+
+      TreeView {
+        id: treeView
+
+        anchors.fill: parent
+        model: Backend.tree
+
+        rootIndex: model.rootIndex
+
+        delegate: FileDelegate {}
+      }
+    }
+  }
+
+  Page {
+    id: page
+
+    anchors.fill: parent
+    anchors.leftMargin: sideBar.posX
+
+    header: ToolBar {
+      Row {
+        anchors.fill: parent
+        ToolButton {
+          icon.name: sideBar.visible ? "sidebar-collapse-symbolic" : "sidebar-show-symbolic"
+          onClicked: {
+            if (sideBar.visible) {
+              sideBar.close()
+            } else {
+              sideBar.open()
+            }
+          }
+        }
+      }
+    }
+
+    background: Rectangle {
+      color: palette.light
+    }
+
+    Text {
+      anchors.centerIn: parent
+      text: Backend.hello()
     }
   }
 }
