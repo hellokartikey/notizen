@@ -5,6 +5,7 @@ FileModel::FileModel(QObject* parent)
     , m_index(QFileSystemModel::setRootPath(QDir::currentPath())) {}
 
 int FileModel::columnCount(const QModelIndex& parent) const {
+  std::ignore = parent;
   return 1;
 }
 

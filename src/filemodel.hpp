@@ -4,7 +4,6 @@
 #include <QDir>
 #include <QFileSystemModel>
 #include <QObject>
-#include <QVariant>
 
 class FileModel : public QFileSystemModel {
   Q_OBJECT;
@@ -14,9 +13,9 @@ class FileModel : public QFileSystemModel {
  public:
   FileModel(QObject* parent = nullptr);
 
-  int columnCount(const QModelIndex& parent = QModelIndex{}) const override;
+  [[nodiscard]] int columnCount(const QModelIndex& parent = {}) const override;
 
-  QModelIndex rootIndex() const;
+  [[nodiscard]] QModelIndex rootIndex() const;
 
  private:
   QModelIndex m_index;

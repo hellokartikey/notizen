@@ -16,12 +16,12 @@ class Backend : public QObject {
   Backend(QObject* parent = nullptr);
 
   FileModel& tree();
-  const FileModel& tree() const;
+  [[nodiscard]] const FileModel& tree() const;
 
  public:
   static Backend* get();
 
-  Q_INVOKABLE QString hello() const;
+  Q_INVOKABLE [[nodiscard]] QString hello() const;
 
   FileModel* getTree();
 

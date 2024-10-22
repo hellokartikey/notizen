@@ -12,7 +12,8 @@ Checks: '
   portability-*,
   readability-*,
   -bugprone-suspicious-include,
-  -modernize-use-trailing-return-type
+  -modernize-use-trailing-return-type,
+  -readability-static-accessed-through-instance
 '
 WarningsAsErrors: ''
 HeaderFileExtensions:
