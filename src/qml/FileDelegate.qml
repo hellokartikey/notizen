@@ -26,13 +26,15 @@ Item {
     Repeater {
       model: root.depth
       delegate: Item {
+        id: delegateItem
+
         width: root.indentationUnit
         height: root.elementHeight
 
         Rectangle {
-          anchors.left: parent.left
-          anchors.top: parent.top
-          anchors.bottom: parent.bottom
+          anchors.left: delegateItem.left
+          anchors.top: delegateItem.top
+          anchors.bottom: delegateItem.bottom
           anchors.leftMargin: root.indentationUnit / 2
           width: 1
           color: palette.active.mid
@@ -42,17 +44,17 @@ Item {
   }
 
   ItemDelegate {
-    anchors.fill: parent
+    anchors.fill: root
     anchors.leftMargin: indentation
 
-    text: fileName
-    icon.name: hasChildren ? "folder-notes-symbolic" : "text-plain"
+    text: root.fileName
+    icon.name: root.hasChildren ? "folder-notes-symbolic" : "text-plain"
 
     onClicked: {
-      if (hasChildren) {
-        treeView.toggleExpanded(row)
+      if (root.hasChildren) {
+        root.treeView.toggleExpanded(row)
       } else {
-        Backend.openNote(filePath)
+        Backend.openNote(root.filePath)
       }
     }
   }

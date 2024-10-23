@@ -23,13 +23,13 @@ Drawer {
   Item {
     id: dragRect
 
-    height: parent.height
+    height: root.height
     width: root.dragWidth
 
     x: root.defaultWidth
 
     MouseArea {
-      anchors.fill: parent
+      anchors.fill: dragRect
 
       hoverEnabled: true
       cursorShape: pressed ? Qt.DragMoveCursor : Qt.SplitHCursor
