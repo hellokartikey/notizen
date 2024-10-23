@@ -15,7 +15,7 @@ ToolBar {
       icon.name: "debug-step-instruction"
       text: "Debug"
 
-      visible: sideBar.visible
+      visible: sideBar.opened
     }
 
     Item {
@@ -25,7 +25,7 @@ ToolBar {
 
     ToolSeparator {
       id: separator
-      visible: sideBar.visible
+      visible: sideBar.opened
     }
 
     ToolButton {

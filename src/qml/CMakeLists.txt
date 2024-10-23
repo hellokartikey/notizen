@@ -4,4 +4,6 @@ QML_FILES
   Main.qml
   FileDelegate.qml
   SideBar.qml
+  DefaultPage.qml
+  MainToolBar.qml
 )
