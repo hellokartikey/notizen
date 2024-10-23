@@ -14,8 +14,20 @@ class Backend : public QObject {
   QML_ELEMENT;
   QML_SINGLETON;
 
-  Q_PROPERTY(FileModel* tree READ getTree CONSTANT);
-  Q_PROPERTY(QString currentNote READ getCurrentNote WRITE setCurrentNote NOTIFY sigCurrentNote);
+  // clang-format off
+  Q_PROPERTY(
+    FileModel* tree
+    READ       getTree
+    CONSTANT
+  );
+
+  Q_PROPERTY(
+    QString currentNote
+    READ    getCurrentNote
+    WRITE   setCurrentNote
+    NOTIFY  sigCurrentNote
+  );
+  // clang-format on
 
  private:
   Backend(QObject* parent = nullptr);

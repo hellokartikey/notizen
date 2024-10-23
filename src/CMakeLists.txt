@@ -7,6 +7,7 @@ PRIVATE
   backend.cpp
   filemodel.hpp
   filemodel.cpp
+  fmt.hpp
 )
 
 qt_add_qml_module(${PROJECT_NAME}

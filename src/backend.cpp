@@ -1,10 +1,14 @@
 #include "backend.hpp"
 
+#include <fmt/core.h>
+
 #include <QDir>
 #include <QObject>
 #include <QString>
 
-#include <fmt/core.h>
+#include <libassert/assert.hpp>
+
+#include "fmt.hpp"
 
 Backend::Backend(QObject* parent)
     : QObject(parent) {
@@ -43,18 +47,25 @@ FileModel* Backend::getTree() {
 }
 
 void Backend::openNote(const QString& path) {
- // TODO - Add implementation
- qDebug() << fmt::format("Backend::openNote({}) - Not yet implemented!", qPrintable(path));
+  PANIC("TODO - Implement this", path);
 }
 
-QString& Backend::currentNote() { return m_current_note; }
+QString& Backend::currentNote() {
+  return m_current_note;
+}
 
-const QString& Backend::currentNote() const { return m_current_note; }
+const QString& Backend::currentNote() const {
+  return m_current_note;
+}
 
-const QString& Backend::getCurrentNote() const { return currentNote(); }
+const QString& Backend::getCurrentNote() const {
+  return currentNote();
+}
 
 void Backend::setCurrentNote(const QString& new_value) {
-  if (new_value == currentNote()) { return; }
+  if (new_value == currentNote()) {
+    return;
+  }
 
   currentNote() = new_value;
   Q_EMIT sigCurrentNote();
