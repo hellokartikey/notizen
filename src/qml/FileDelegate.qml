@@ -14,6 +14,7 @@ Item {
   required property int depth
 
   required property string fileName
+  required property string filePath
 
   property int indentation: indentationUnit * depth
 
@@ -47,6 +48,12 @@ Item {
     text: fileName
     icon.name: hasChildren ? "folder-notes-symbolic" : "text-plain"
 
-    onClicked: { treeView.toggleExpanded(row) }
+    onClicked: {
+      if (hasChildren) {
+        treeView.toggleExpanded(row)
+      } else {
+        Backend.openNote(filePath)
+      }
+    }
   }
 }
