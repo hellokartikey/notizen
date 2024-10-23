@@ -2,6 +2,8 @@
 #define HK_NOTIZEN_BACKEND_HPP
 
 #include <QFileSystemModel>
+#include <QQmlEngine>
+#include <QJSEngine>
 #include <QObject>
 #include <QString>
 
@@ -9,6 +11,8 @@
 
 class Backend : public QObject {
   Q_OBJECT;
+  QML_ELEMENT;
+  QML_SINGLETON;
 
   Q_PROPERTY(FileModel* tree READ getTree CONSTANT);
 
@@ -20,6 +24,8 @@ class Backend : public QObject {
 
  public:
   static Backend* get();
+
+  static Backend* create(QQmlEngine* qml, QJSEngine* js);
 
   Q_INVOKABLE [[nodiscard]] QString hello() const;
 

@@ -22,6 +22,16 @@ Backend* Backend::get() {
   return &instance;
 }
 
+Backend* Backend::create(QQmlEngine* qml, QJSEngine* js) {
+  std::ignore = qml;
+  std::ignore = js;
+
+  auto* ptr = Backend::get();
+  QJSEngine::setObjectOwnership(ptr, QJSEngine::CppOwnership);
+
+  return ptr;
+}
+
 QString Backend::hello() const {
   return tree().rootPath();
 }

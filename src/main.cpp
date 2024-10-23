@@ -14,7 +14,6 @@ int main(int argc, char* argv[]) {
       &qml, &QQmlApplicationEngine::objectCreationFailed, &app,
       []() { QCoreApplication::exit(-1); }, Qt::QueuedConnection);
 
-  qmlRegisterSingletonInstance("Notizen", 1, 0, "Backend", Backend::get());
   qml.loadFromModule("Notizen", "Main");
 
   return app.exec();
