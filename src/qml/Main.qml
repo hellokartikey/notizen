@@ -1,6 +1,8 @@
 import QtQuick
 import QtQuick.Controls
 
+import Notizen
+
 ApplicationWindow {
   id: root
 
@@ -9,63 +11,30 @@ ApplicationWindow {
 
   visible: true
 
+  header: MainToolBar { sideBar: sideBar }
+
   SideBar {
     id: sideBar
 
     parentItem: root
 
-    Page {
+    TreeView {
+      id: treeView
+
       anchors.fill: parent
+      model: Backend.tree
 
-      header: ToolBar {
-        ToolButton {
-          icon.name: "debug-step-instruction"
-          text: "Debug"
-        }
-      }
+      rootIndex: model.rootIndex
 
-      TreeView {
-        id: treeView
-
-        anchors.fill: parent
-        model: Backend.tree
-
-        rootIndex: model.rootIndex
-
-        delegate: FileDelegate {}
-      }
+      delegate: FileDelegate {}
     }
   }
 
-  Page {
-    id: page
+  DefaultPage {
+    id: defaultPage
+
+    sideBar: sideBar
 
     anchors.fill: parent
-    anchors.leftMargin: sideBar.posX
-
-    header: ToolBar {
-      Row {
-        anchors.fill: parent
-        ToolButton {
-          icon.name: sideBar.visible ? "sidebar-collapse-symbolic" : "sidebar-show-symbolic"
-          onClicked: {
-            if (sideBar.visible) {
-              sideBar.close()
-            } else {
-              sideBar.open()
-            }
-          }
-        }
-      }
-    }
-
-    background: Rectangle {
-      color: palette.light
-    }
-
-    Text {
-      anchors.centerIn: parent
-      text: Backend.hello()
-    }
   }
 }

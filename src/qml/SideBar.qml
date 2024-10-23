@@ -17,7 +17,9 @@ Drawer {
   interactive: false
   visible: true
 
-  height: parentItem.height
+  y: parentItem.header.height
+
+  height: parentItem.height - y
   width: dragRect.x + (dragWidth / 2)
 
   Item {
